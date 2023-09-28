@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
+import "./Register.css"
 function RegisterForm() {
   const [formState, setFormState] = useState({
     fullname: "",
@@ -45,36 +45,32 @@ function RegisterForm() {
   return (
     <div className="f-cont">
       <div className="signup_form_container">
-        <div className="left">
-          <h1> Already have an account?</h1>
-          <Link to="/login">
-            <button type="button" className="white_btn">
-              Log in
-            </button>
-          </Link>
-        </div>
         <div className="right">
           <form action="/" onSubmit={handleSubmit}>
             <h1>Create Account</h1>
             <input
+            className="linput"
               name="fullname"
               placeholder="Name"
               value={formState.name}
               onChange={handleChange}
             />
             <input
+            className="linput"
               name="username"
               placeholder="Username"
               value={formState.username}
               onChange={handleChange}
             />
             <input
+            className="linput"
               name="email"
               placeholder="Email"
               value={formState.email}
               onChange={handleChange}
             />
             <input
+            className="linput"
               type="password"
               name="password"
               placeholder="password"
@@ -88,6 +84,14 @@ function RegisterForm() {
               Sign up
             </button>
           </form>
+        </div>
+        <div className="left">
+          <h1> Already have an account?</h1>
+          <Link to="/login">
+            <button type="button" className="white_btn">
+              Log in
+            </button>
+          </Link>
         </div>
        
         {/* <div>
