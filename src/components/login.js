@@ -2,6 +2,7 @@ import { useState } from 'react';
 //import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import "./Login.css";
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +34,7 @@ function LoginForm() {
 
           
           <form onSubmit={handleSubmit} className="form_container">
-            <h1>Login to Your Account</h1>
+            <h1>Welcome</h1>
             {error && <p className="error_msg">{error}</p>}
             <input
               className="linput"
