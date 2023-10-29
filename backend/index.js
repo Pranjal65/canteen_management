@@ -7,27 +7,35 @@ require('./config');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const User = require('./models/User')
+const Order = require('./models/Order')
 
 
 //////////////////////////////////DATABASE SECTION ////////////////////////////////////////////
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    unique: true
-  },
-  password: { type: String },
-  fullname: { type: String },
-  email: {
-    type: String,
-    unique: true
-  },
-  orders: { type: Number, default: 0 },
- 
+// const userSchema = new mongoose.Schema({
+//   username: {
+//     type: String,
+//     unique: true
+//   },
+//   password: { type: String },
+//   fullname: { type: String },
+//   email: {
+//     type: String,
+//     unique: true
+//   },
+//   orders: [
+//     {
+//       // Define the schema for an order
+//       item: { type: String, required: true },
+//       quantity: { type: Number, required: true },
+//       date: { type: Date, default: Date.now }
+//     }
+//   ]
+// });
 
-});
 
-const db = mongoose.model('User', userSchema);
+// const db = mongoose.model('User', userSchema);
 
 ///////////////////////////////////////  MIDDLEWARE SECTION  ///////////////////////////////
 app.use(cors());
@@ -64,7 +72,7 @@ app.use(passport.session());
 ////////////////////////////////////////// Passport session section //////////////////////
 passport.use(new LocalStrategy({ usernameField: 'email' },
   async function (email, password, done) {
-    const user = await db.findOne({ email: email });
+    const user = await User.findOne({ email: email });
     if (!user) {
       return done(null, false, { message: 'Invalid email or password' });
     }
@@ -92,6 +100,8 @@ app.get('/home', isAuthenticated, function (req, res) {
   res.json({ user: req.user });
   console.log(req.user);
 });
+
+
 
 app.post('/login', passport.authenticate('local'), (req, res) => {
   req.login(req.user, function(err) {
@@ -121,7 +131,7 @@ app.post('/register', async (req, resp) => {
       email: req.body.email,
     };
     console.log(userData);
-    const fluffy = new db(userData);
+    const fluffy = new User(userData);
     await fluffy.save();
     //resp.render('home', { user });
     resp.send("Registration successful")
@@ -132,6 +142,64 @@ app.post('/register', async (req, resp) => {
     console.log(err);
   }
 });
+
+/////////////////////////////////////////ORDER AND RETRIEV DATA //////////////////////////////////
+app.post('/order', async (req, res) => {
+ 
+  try {
+    console.log('Received request body:', req.body);
+    const {customerName,customerEmail,items} = req.body;
+    console.log(customerName);
+    console.log(items);
+    // Find an existing order for the provided email
+    let existingOrder = await Order.findOne({customerEmail});
+
+    if (!existingOrder) {
+      // If no order exists, create a new order document
+      existingOrder = new Order({
+        customerName,
+        customerEmail,
+       // items: [{customerName: customerName, ...items}],
+        items:[...items]
+      });
+    } 
+    else {
+        // If an order exists, push the new items
+       // existingOrder.items.push({customerName: customerName, ...items});
+       existingOrder.items.push(...items);
+    }
+
+    // Save the order document
+    await existingOrder.save();
+    res.json({ success: true });
+  } 
+  catch (error) {
+    console.log("error in backend");
+    console.error('Error creating/updating order:', error);
+    res.status(500).json({ error: 'Failed to create/update order' });
+  }
+});
+
+// Route for retrieving orders for a specific user
+app.post('/myOrder', async (req, res) => {
+  try {
+    const { customerEmail } = req.body;
+
+    // Find orders for the provided email
+    const userOrders = await Order.find({ customerEmail});
+
+    if (userOrders.length === 0) {
+      res.status(404).json({ message: 'No orders found for the user' });
+    } else {
+      res.status(200).json({ orderData: userOrders });
+    }
+  } catch (error) {
+    console.error('Error retrieving orders:', error);
+    res.status(500).json({ error: 'Failed to retrieve orders' });
+  }
+});
+
+
 
 //////////////////////////////////////////////// APi's initialization /////////////////////////////
 

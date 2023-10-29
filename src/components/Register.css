@@ -3,10 +3,22 @@
     align-items:center;
     justify-content:center;
     flex-direction: row;
-    background-image: url("../../public/login2.jpg");
+    background-image: url("../../public/login1.jpg");
     background-size: cover;
-    height: 650px;
+    height: 660px;
     background-repeat: no-repeat
+}
+
+.f-cont .back_btn{
+   
+    background: none;
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    margin-right: 170px;
+    color: aliceblue;
+   
+  
 }
 .linput{
     display: flex;
@@ -54,7 +66,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-right: 45%;
+    padding-right: 55%;
 
 }
 .form_container{
