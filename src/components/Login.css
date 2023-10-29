@@ -1,12 +1,15 @@
+
+
+
 .g1{
     display: flex;
     align-items:center;
     justify-content:center;
     flex-direction: row;
-    background-image: url("../../public/login2.jpg");
+    background-image: url("../../public/login1.jpg");
+    background-repeat: no-repeat;
     background-size: cover;
-    height: 650px;
-    background-repeat: no-repeat
+    height: 660px;
 }
 .linput{
     display: flex;
@@ -23,6 +26,16 @@
     color:aliceblue;
     font-weight: bold;
     
+}
+.g1 .back_btn{
+   
+    background: none;
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;margin-right: 200px;
+    color: aliceblue;
+   
+  
 }
 ::placeholder{
     color:aliceblue;
@@ -54,7 +67,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-right: 45%;
+    padding-right: 55%;
 
 }
 .form_container{

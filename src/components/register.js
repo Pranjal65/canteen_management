@@ -44,6 +44,7 @@ function RegisterForm() {
 
   return (
     <div className="f-cont">
+       <Link to="/"> <button className="back_btn" ><i class="fa fa-arrow-left"></i></button></Link>
       <div className="signup_form_container">
         <div className="right">
           <form action="/" onSubmit={handleSubmit}>

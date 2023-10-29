@@ -3,6 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import "./Login.css";
+
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,6 +12,7 @@ function LoginForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("hellooo you are logged in");
     try {
       const response = await axios.post("http://localhost:5000/login", {
         email,
@@ -19,8 +21,8 @@ function LoginForm() {
 
       // If authentication was successful, store the user object in local storage and redirect the user to the home page
       localStorage.setItem('user', JSON.stringify(response.data));
-      window.location.href = '/Dashboard';
-
+      window.location.href = '/';
+      
     } catch (error) {
       console.error(error);
       setError("Invalid email or password. Please try again.");
@@ -29,6 +31,7 @@ function LoginForm() {
 
   return (
     <div className="g1">
+      <Link to="/"> <button className="back_btn" ><i className="fa fa-arrow-left"></i></button></Link>
       <div className="login_form_container">
         <div className="left">
 
